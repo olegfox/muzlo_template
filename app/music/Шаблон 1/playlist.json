@@ -1,0 +1,81 @@
+[
+  {
+    "title": "Шаблон 1",
+    "patterns_dirs": [
+      {
+        "title": "Утро",
+        "time_start": 75191,
+        "time_end": 3191,
+        "music_files": [
+          {
+            "title": "1",
+            "owner": "owner 1",
+            "genre": "genre 1",
+            "file_name": "\/music\/Шаблон 1\/Утро\/1.mp3"
+          },
+          {
+            "title": "2",
+            "owner": "owner 2",
+            "genre": "genre 2",
+            "file_name": "\/music\/Шаблон 1\/Утро\/2.mp3"
+          },
+          {
+            "title": "3",
+            "owner": "owner 3",
+            "genre": "genre 3",
+            "file_name": "\/music\/Шаблон 1\/Утро\/3.mp3"
+          },
+          {
+            "title": "4",
+            "owner": "owner 4",
+            "genre": "genre 4",
+            "file_name": "\/music\/Шаблон 1\/Утро\/4.mp3"
+          },
+          {
+            "title": "5",
+            "owner": "owner 5",
+            "genre": "genre 5",
+            "file_name": "\/music\/Шаблон 1\/Утро\/5.mp3"
+          }
+        ]
+      },
+      {
+        "title": "День",
+        "time_start": 6791,
+        "time_end": 28391,
+        "music_files": [
+          {
+            "title": "6",
+            "owner": "owner 6",
+            "genre": "genre 6",
+            "file_name": "\/music\/Шаблон 1\/День\/6.mp3"
+          },
+          {
+            "title": "7",
+            "owner": "owner 7",
+            "genre": "genre 7",
+            "file_name": "\/music\/Шаблон 1\/День\/7.mp3"
+          },
+          {
+            "title": "8",
+            "owner": "owner 8",
+            "genre": "genre 8",
+            "file_name": "\/music\/Шаблон 1\/День\/8.mp3"
+          },
+          {
+            "title": "9",
+            "owner": "owner 9",
+            "genre": "genre 9",
+            "file_name": "\/music\/Шаблон 1\/День\/9.mp3"
+          },
+          {
+            "title": "10",
+            "owner": "owner 10",
+            "genre": "genre 10",
+            "file_name": "\/music\/Шаблон 1\/День\/10.mp3"
+          }
+        ]
+      }
+    ]
+  }
+]

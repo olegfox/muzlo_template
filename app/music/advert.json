@@ -1,0 +1,32 @@
+[
+  {
+    "rhythm": 1,
+    "files": [
+      {
+        "title": "1",
+        "sort": 1,
+        "file_name": "\/music\/advert\/1.mp3"
+      },
+      {
+        "title": "2",
+        "sort": 2,
+        "file_name": "\/music\/advert\/2.mp3"
+      },
+      {
+        "title": "3",
+        "sort": 3,
+        "file_name": "\/music\/advert\/3.mp3"
+      },
+      {
+        "title": "4",
+        "sort": 4,
+        "file_name": "\/music\/advert\/4.mp3"
+      },
+      {
+        "title": "5",
+        "sort": 5,
+        "file_name": "\/music\/advert\/5.mp3"
+      }
+    ]
+  }
+]

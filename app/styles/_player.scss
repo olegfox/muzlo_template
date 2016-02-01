@@ -1,0 +1,70 @@
+.debug{
+  position: fixed;
+  color: #549b00;
+  font-size: 14px;
+  padding: 20px;
+}
+
+.wrap-player{
+  height: 100%;
+  .player{
+    display: table;
+    width: 100%;
+    height: 100%;
+    .player-buttons{
+      display: table-cell;
+      vertical-align: middle;
+      ul{
+        width: 100%;
+        max-width: 720px;
+        color: #9b9b9a;
+        text-align: justify;
+        margin: 0 auto;
+        font-size: 0;
+        &:before{
+          display: inline-block;
+          width: 100%;
+          height: 0;
+        }
+        li{
+          display: inline-block;
+          width: 33.33%;
+          cursor: pointer;
+          font-size: 40px;
+          text-transform: uppercase;
+          outline: 0;
+          &:hover{
+            opacity: 0.5;
+          }
+          .wrap{
+            padding: 0 30px;
+            text-align: center;
+          }
+          span.bg{
+            display: inline-block;
+            width: 100%;
+            height: 200px;
+          }
+          &.btn-play{
+            .bg{
+              background: url("../images/play.png") 0 0 no-repeat;
+              background-size: contain;
+            }
+          }
+          &.btn-stop{
+            .bg{
+              background: url("../images/stop.png") 0 0 no-repeat;
+              background-size: contain;
+            }
+          }
+          &.btn-reset{
+            .bg{
+              background: url("../images/reset.png") 0 0 no-repeat;
+              background-size: contain;
+            }
+          }
+        }
+      }
+    }
+  }
+}
