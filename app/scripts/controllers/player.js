@@ -30,6 +30,9 @@ angular.module('muzloTemplateApp')
 
     $http.get('/music/Шаблон 1/playlist.json')
       .then(function(response){
+        // Локальное хранилище музыкальных файлов и рекламы
+        var localStorage = require('localStorage');
+
         // Шаблон
         $scope.pattern = response.data[0];
 
@@ -65,6 +68,16 @@ angular.module('muzloTemplateApp')
             return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
           }
         };
+
+        $scope.loadToLocalStorage = function() {
+          $scope.patterns_dirs.forEach(function(pattern_dir){
+            pattern_dir.music_files.forEach(function(music_file){
+              if(null !== localStorage.getItem(music_file.file_name)){
+                localStorage.setItem(music_file.file_name);
+              }
+            });
+          });
+        }();
 
         // Сброс
         $scope.reset = function () {
