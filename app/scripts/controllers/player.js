@@ -30,6 +30,7 @@ angular.module('muzloTemplateApp')
 
     $http.get('/music/Шаблон 1/playlist.json')
       .then(function(response){
+
         // Шаблон
         $scope.pattern = response.data[0];
 
@@ -66,32 +67,6 @@ angular.module('muzloTemplateApp')
           }
         };
 
-        // Если localStorage поддерживается
-        if(localStorage) {
-          $scope.loadToLocalStorage = function() {
-            $scope.patterns_dirs.forEach(function(pattern_dir){
-              pattern_dir.music_files.forEach(function(music_file){
-                if(null === localStorage.getItem(music_file.file_name)){
-                  var request = new XMLHttpRequest();
- 
-                  // Let's get the first user's photo.
-                  request.open('GET', music_file.file_name, true);
-                  request.responseType = 'arraybuffer';
-                   
-                  // When the AJAX state changes, save the photo locally.
-                  request.onload = function(){
-                    context.decodeAudioData(request.response, function(buffer){
-                      localStorage.setItem(music_file.file_name, buffer);  
-                    })
-                  };
-                   
-                  request.send();
-                }
-              });
-            });
-          }();
-        }
-
         // Сброс
         $scope.reset = function () {
           $scope.shuffle();
@@ -106,18 +81,7 @@ angular.module('muzloTemplateApp')
         // Загрузка трека
         var loadMusic = function (pl) {
 
-          if(localStorage) {
-            if(localStorage.getItem(pl.music_files[$scope.numberTrack].file_name)) {
-              console.log('Load in Localstorage');
-              $scope.player.load(localStorage.getItem(pl.music_files[$scope.numberTrack].file_name));
-            } else {
-              console.log('Not found in Localstorage');
-              $scope.player.load(pl.music_files[$scope.numberTrack].file_name);
-            }
-          } else {
-            console.log('Unvailable Localstorage');
-            $scope.player.load(pl.music_files[$scope.numberTrack].file_name);
-          }  
+          $scope.player.load(pl.music_files[$scope.numberTrack].file_name);
 
           pl.selected = 1;
           $scope.player.play();
