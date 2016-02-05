@@ -67,6 +67,18 @@ angular.module('muzloTemplateApp')
           }
         };
 
+        // Проверка вхождения плейлиста во временной диапазон
+        $scope.checkPlaylistTime = function (playlist) {
+          
+          return false;
+        };
+
+        // Поиск плейлиста по текущему времени
+        $scope.findPlaylistTime = function () {
+          
+          return false;
+        };
+
         // Сброс
         $scope.reset = function () {
           $scope.shuffle();
