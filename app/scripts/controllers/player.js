@@ -21,7 +21,20 @@ angular.module('muzloTemplateApp')
 
     return audio5js;
   })
-  .controller('PlayerCtrl', function ($scope, $http, AudioService) {
+  .factory('AudioServiceAd', function () {
+    "use strict";
+
+    var params = {
+      swf_path: 'bower_components/audio5/swf/audio5js.swf',
+      throw_errors: true,
+      format_time: true
+    };
+
+    var audio5js = new Audio5js(params);
+
+    return audio5js;
+  })
+  .controller('PlayerCtrl', function ($scope, $http, AudioService, AudioServiceAd) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -31,14 +44,31 @@ angular.module('muzloTemplateApp')
     $http.get('/music/Шаблон 1/playlist.json')
       .then(function(response){
 
+        // Сервис для работы с аудио рекламой
+        $scope.playerAd = AudioServiceAd;
+
+        // Сервис для работы с аудио
+        $scope.player = AudioService;
+
+        $scope.timeoutAd = 0; // Счетчик рекламы
+
+        $http.get('/music/advert.json')
+          .then(function(response){
+
+             $scope.ad = response.data[0].files;
+
+             $scope.numberTrackAd = 0;
+             $scope.adInterval = response.data[0].rhythm * 5 * 1000;
+             $scope.timeoutAd = $scope.adInterval;
+
+          }
+        );
+
         // Шаблон
         $scope.pattern = response.data[0];
 
         // Плейлисты
         $scope.patterns_dirs = $scope.pattern.patterns_dirs;
-
-        // Сервис для работы с аудио
-        $scope.player = AudioService;
 
         // Текущий плейлист
         $scope.patterns_dir = $scope.patterns_dirs[0];
@@ -106,6 +136,8 @@ angular.module('muzloTemplateApp')
             $scope.numberTrack = 0;
             $scope.shuffle();
 
+            $scope.timeoutAd = $scope.adInterval;
+
             loadMusic($scope.patterns_dir);
           }
         };
@@ -128,6 +160,40 @@ angular.module('muzloTemplateApp')
               $scope.reset();
             }
             $scope.debug(position, duration);
+
+            $scope.timeoutAd -= 250;
+
+            console.log($scope.timeoutAd);
+
+            if($scope.timeoutAd <= 0) {
+              $scope.stop();
+
+              $('.ad').show();
+              $('.player-buttons').hide();
+
+              $scope.playerAd.load($scope.ad[$scope.numberTrackAd].file_name);
+              $scope.playerAd.audio.play();
+
+              // Окончание проигрывания рекламного трека
+              $scope.playerAd.on('ended', function () {
+                $scope.numberTrackAd++;
+
+                // Если треки в рекламном плейлисте закончились начинаем играть с первого
+                if ($scope.numberTrackAd >= $scope.ad.length) {
+                  $scope.numberTrackAd = 0;
+                }
+
+                $scope.timeoutAd = $scope.adInterval;
+
+                setTimeout(function () {
+                  $scope.play();
+
+                  $('.ad').hide();
+                  $('.player-buttons').show();
+                }, 1000);
+              });
+            }
+
           });
 
           // Debug
