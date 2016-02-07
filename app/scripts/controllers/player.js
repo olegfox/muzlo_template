@@ -69,37 +69,64 @@ angular.module('muzloTemplateApp')
 
         // Проверка вхождения плейлиста во временной диапазон
         $scope.checkPlaylistTime = function (playlist) {
-          
+
           return false;
         };
 
         // Поиск плейлиста по текущему времени
         $scope.findPlaylistTime = function () {
-          
+
           return false;
         };
 
         // Сброс
         $scope.reset = function () {
-          $scope.shuffle();
-          loadMusic($scope.patterns_dir);
+          var time_start = new Date($scope.patterns_dir.time_start*1000),
+            time_end = new Date($scope.patterns_dir.time_end*1000),
+            ready = false;
+
+          time_start = time_start.getHours() + ":" + time_start.getMinutes();
+          time_end = time_end.getHours() + ":" + time_end.getMinutes();
+
+          $('.debug')
+            .empty()
+            .append("Название шаблона: " + $scope.pattern.title + "<br/>" +
+            "Название плейлиста: " + $scope.patterns_dir.title + "<br/>" +
+            "Время начала: " + time_start + "<br/>" +
+            "Время окончания: " + time_end + "<br/>" +
+            "Текущее время: " + moment().format("HH:mm") + "<br/>");
+
+          if($scope.isReady()) {
+            ready = true;
+          } else if ($scope.searchPlaylist()) {
+            ready = true;
+          }
+
+          if(ready) {
+            $scope.numberTrack = 0;
+            $scope.shuffle();
+
+            loadMusic($scope.patterns_dir);
+          }
         };
 
         // Стоп
         $scope.stop = function () {
-          $scope.player.pause();
+          $scope.player.audio.pause();
         };
 
         // Загрузка трека
         var loadMusic = function (pl) {
 
           $scope.player.load(pl.music_files[$scope.numberTrack].file_name);
-
-          pl.selected = 1;
-          $scope.player.play();
+          $scope.player.audio.play();
 
           // Обновление времени проигрывания трека
           $scope.player.on('timeupdate', function (position, duration) {
+            if(!$scope.isReady()) {
+              $scope.player.audio.pause();
+              $scope.reset();
+            }
             $scope.debug(position, duration);
           });
 
@@ -125,25 +152,25 @@ angular.module('muzloTemplateApp')
                       "Время: " + position);
           };
 
-          // Следующий трек в плейлисте
-          $scope.playNext = function () {
-            $scope.numberTrack++;
-
-            // Если треки в плейлисте закончились начинаем играть с первого
-            if ($scope.numberTrack >= $scope.patterns_dir.music_files.length) {
-              $scope.numberTrack = 0;
-            }
-
-            loadMusic($scope.patterns_dir);
-          };
-
           // Окончание проигрывания трека и переключение на следующий трек
           $scope.player.on('ended', function () {
             setTimeout(function () {
               $scope.playNext();
             }, 1000);
           });
-        }
+        };
+
+        // Следующий трек в плейлисте
+        $scope.playNext = function () {
+          $scope.numberTrack++;
+
+          // Если треки в плейлисте закончились начинаем играть с первого
+          if ($scope.numberTrack >= $scope.patterns_dir.music_files.length) {
+            $scope.numberTrack = 0;
+          }
+
+          loadMusic($scope.patterns_dir);
+        };
 
         // Перемешивание треков в плейлисте
         $scope.shuffle = function () {
@@ -167,11 +194,55 @@ angular.module('muzloTemplateApp')
           $scope.patterns_dir.music_files = shuffleArray($scope.patterns_dir.music_files);
         };
 
+        // Метод проверки попадания во временной интервал
+        $scope.checkTimeInterval = function(time_start, time_end) {
+
+          if(time_end > time_start) {
+            if((moment(time_start*1000).format("HH:mm:ss") <= moment().format("HH:mm:ss")) &&
+              (moment(time_end*1000).format("HH:mm:ss") >= moment().format("HH:mm:ss"))) {
+              return true;
+            }
+          } else {
+            if((moment(time_start*1000).format("HH:mm:ss") <= moment().format("HH:mm:ss")) ||
+              (moment(time_end*1000).format("HH:mm:ss") >= moment().format("HH:mm:ss"))) {
+              return true;
+            }
+          }
+
+          return false;
+
+        };
+
+        // Метод который проверяет подходит ли плейлист к текущему времени
+        $scope.isReady = function() {
+
+          if($scope.checkTimeInterval($scope.patterns_dir.time_start, $scope.patterns_dir.time_end)) {
+            return true;
+          }
+
+          return false;
+        };
+
+        // Метод который ищет подходящий шаблон к текущему времени
+        $scope.searchPlaylist = function() {
+          var toReturn = false;
+
+          $.each($scope.patterns_dirs, function(i, pattern_dir){
+            if($scope.checkTimeInterval(pattern_dir.time_start, pattern_dir.time_end)) {
+              $scope.patterns_dir = pattern_dir;
+              toReturn = true;
+              return true;
+            }
+          });
+
+          return toReturn;
+        };
+
         // Плей
         $scope.play = function () {
           // Если плеер на паузе
-          if($scope.player.position && !$scope.player.playing) {
-            $scope.player.play();
+          if($scope.player.position && !$scope.player.playing && $scope.isReady()) {
+            $scope.player.audio.play();
           }
           // Если включается первый раз
           else if(!$scope.player.position) {
