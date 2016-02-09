@@ -153,6 +153,10 @@ angular.module('muzloTemplateApp')
           $scope.player.load(pl.music_files[$scope.numberTrack].file_name);
           $scope.player.audio.play();
 
+          $scope.player.on('canplay', function() {
+            $scope.resetAnimation();
+          });
+
           // Обновление времени проигрывания трека
           $scope.player.on('timeupdate', function (position, duration) {
             if(!$scope.isReady()) {
@@ -316,6 +320,14 @@ angular.module('muzloTemplateApp')
           }
 
         };
+
+        // Анимация
+        $scope.resetAnimation = function() {
+          $('.player-buttons .bg').removeClass('animated');
+        };
+        $('.player-buttons li').click(function(){
+          $(this).find('span.bg').addClass('bounce animated forever');
+        });
 
         //if (!isMobile.iOS()) {
         //  $scope.playMusic($scope.currentPlaylist);
