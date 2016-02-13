@@ -58,7 +58,7 @@ angular.module('muzloTemplateApp')
              $scope.ad = response.data[0].files;
 
              $scope.numberTrackAd = 0;
-             $scope.adInterval = response.data[0].rhythm * 5 * 1000;
+             $scope.adInterval = response.data[0].rhythm * 15 * 1000;
              $scope.timeoutAd = $scope.adInterval;
 
           }
@@ -120,11 +120,15 @@ angular.module('muzloTemplateApp')
 
           $('.debug')
             .empty()
-            .append("Название шаблона: " + $scope.pattern.title + "<br/>" +
+            .append("Debug: <br/><br/>" +
+            "Название шаблона: " + $scope.pattern.title + "<br/>" +
             "Название плейлиста: " + $scope.patterns_dir.title + "<br/>" +
             "Время начала: " + time_start + "<br/>" +
             "Время окончания: " + time_end + "<br/>" +
             "Текущее время: " + moment().format("HH:mm") + "<br/>");
+
+          // Сброс счетчика рекламы
+          $scope.timeoutAd = $scope.adInterval;
 
           if($scope.isReady()) {
             ready = true;
@@ -139,6 +143,14 @@ angular.module('muzloTemplateApp')
             $scope.timeoutAd = $scope.adInterval;
 
             loadMusic($scope.patterns_dir);
+          } else {
+
+            $('.debug')
+              .empty()
+              .append("Debug: <br/><br/>" +
+              "Под текущее время нет шаблона");
+
+            $scope.resetAnimation();
           }
         };
 
@@ -157,49 +169,6 @@ angular.module('muzloTemplateApp')
             $scope.resetAnimation();
           });
 
-          // Обновление времени проигрывания трека
-          $scope.player.on('timeupdate', function (position, duration) {
-            if(!$scope.isReady()) {
-              $scope.player.audio.pause();
-              $scope.reset();
-            }
-            $scope.debug(position, duration);
-
-            $scope.timeoutAd -= 250;
-
-            console.log($scope.timeoutAd);
-
-            if($scope.timeoutAd <= 0) {
-              $scope.stop();
-
-              $('.ad').show();
-              $('.player-buttons').hide();
-
-              $scope.playerAd.load($scope.ad[$scope.numberTrackAd].file_name);
-              $scope.playerAd.audio.play();
-
-              // Окончание проигрывания рекламного трека
-              $scope.playerAd.on('ended', function () {
-                $scope.numberTrackAd++;
-
-                // Если треки в рекламном плейлисте закончились начинаем играть с первого
-                if ($scope.numberTrackAd >= $scope.ad.length) {
-                  $scope.numberTrackAd = 0;
-                }
-
-                $scope.timeoutAd = $scope.adInterval;
-
-                setTimeout(function () {
-                  $scope.play();
-
-                  $('.ad').hide();
-                  $('.player-buttons').show();
-                }, 1000);
-              });
-            }
-
-          });
-
           // Debug
           $scope.debug = function (position, duration) {
             var time_start = new Date($scope.patterns_dir.time_start*1000),
@@ -210,7 +179,8 @@ angular.module('muzloTemplateApp')
 
             $('.debug')
               .empty()
-              .append("Название шаблона: " + $scope.pattern.title + "<br/>" +
+              .append("Debug: <br/><br/>" +
+                      "Название шаблона: " + $scope.pattern.title + "<br/>" +
                       "Название плейлиста: " + $scope.patterns_dir.title + "<br/>" +
                       "Время начала: " + time_start + "<br/>" +
                       "Время окончания: " + time_end + "<br/>" +
@@ -221,14 +191,56 @@ angular.module('muzloTemplateApp')
                       "Продолжительность: " + moment.duration(duration, "seconds").format("mm:ss") + "<br/>" +
                       "Время: " + position);
           };
-
-          // Окончание проигрывания трека и переключение на следующий трек
-          $scope.player.on('ended', function () {
-            setTimeout(function () {
-              $scope.playNext();
-            }, 1000);
-          });
         };
+
+        // Обновление времени проигрывания трека
+        $scope.player.on('timeupdate', function (position, duration) {
+          if(!$scope.isReady()) {
+            $scope.player.audio.pause();
+            $scope.reset();
+          }
+          $scope.debug(position, duration);
+
+          console.log($scope.timeoutAd);
+
+          $scope.timeoutAd -= 250;
+
+          if($scope.timeoutAd <= 0) {
+            $scope.stop();
+
+            $('.ad').show();
+            $('.player-buttons').hide();
+
+            $scope.playerAd.load($scope.ad[$scope.numberTrackAd].file_name);
+            $scope.playerAd.audio.play();
+
+            // Окончание проигрывания рекламного трека
+            $scope.playerAd.on('ended', function () {
+              $scope.numberTrackAd++;
+
+              // Если треки в рекламном плейлисте закончились начинаем играть с первого
+              if ($scope.numberTrackAd >= $scope.ad.length) {
+                $scope.numberTrackAd = 0;
+              }
+
+              $scope.timeoutAd = $scope.adInterval;
+
+              setTimeout(function () {
+                $scope.play();
+
+                $('.ad').hide();
+                $('.player-buttons').show();
+              }, 1000);
+            });
+          }
+        });
+
+        // Окончание проигрывания трека и переключение на следующий трек
+        $scope.player.on('ended', function () {
+          setTimeout(function () {
+            $scope.playNext();
+          }, 1000);
+        });
 
         // Следующий трек в плейлисте
         $scope.playNext = function () {
@@ -313,6 +325,9 @@ angular.module('muzloTemplateApp')
           // Если плеер на паузе
           if($scope.player.position && !$scope.player.playing && $scope.isReady()) {
             $scope.player.audio.play();
+            setTimeout(function(){
+              $scope.resetAnimation();
+            }, 1000);
           }
           // Если включается первый раз
           else if(!$scope.player.position) {
@@ -323,9 +338,11 @@ angular.module('muzloTemplateApp')
 
         // Анимация
         $scope.resetAnimation = function() {
-          $('.player-buttons .bg').removeClass('animated');
+          setTimeout(function(){
+            $('.player-buttons .bg').removeClass('animated');
+          }, 1000);
         };
-        $('.player-buttons li').click(function(){
+        $('.player-buttons li.btn-play').click(function(){
           $(this).find('span.bg').addClass('bounce animated forever');
         });
 
