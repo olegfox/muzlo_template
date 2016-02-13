@@ -44,6 +44,9 @@ angular.module('muzloTemplateApp')
     $http.get('/music/Шаблон 1/playlist.json')
       .then(function(response){
 
+        // Массив Blob объектов
+        $scope.blobs = [];
+
         // Сервис для работы с аудио рекламой
         $scope.playerAd = AudioServiceAd;
 
@@ -61,6 +64,23 @@ angular.module('muzloTemplateApp')
              $scope.adInterval = response.data[0].rhythm * 15 * 1000;
              $scope.timeoutAd = $scope.adInterval;
 
+            // Буферизация рекламных файлов
+            $.each($scope.ad, function(i, file){
+              var xhr = new XMLHttpRequest();
+
+              xhr.addEventListener('load', function(){
+                if (xhr.status == 200){
+
+                  $scope.blobs[file.file_name] = xhr.response;
+
+                }
+              });
+
+              xhr.open('GET', file.file_name);
+              xhr.responseType = 'blob';
+              xhr.send(null);
+
+            });
           }
         );
 
@@ -72,6 +92,32 @@ angular.module('muzloTemplateApp')
 
         // Текущий плейлист
         $scope.patterns_dir = $scope.patterns_dirs[0];
+
+        // Буферизация музыкальных файлов
+        $.each($scope.patterns_dir.music_files, function(i, file){
+          var xhr = new XMLHttpRequest();
+
+          xhr.addEventListener('load', function(){
+            if (xhr.status == 200){
+
+              $scope.blobs[file.file_name] = xhr.response;
+
+            }
+          });
+
+          xhr.open('GET', file.file_name);
+          xhr.responseType = 'blob';
+          xhr.send(null);
+
+        });
+
+        // Загрузка удаленного файла
+        function readFile(file, onLoadCallback){
+          var reader = new FileReader();
+          reader.onload = onLoadCallback;
+          reader.readAsDataURL(file);
+        }
+
         // Текущий трек
         $scope.numberTrack = 0;
 
@@ -162,8 +208,12 @@ angular.module('muzloTemplateApp')
         // Загрузка трека
         var loadMusic = function (pl) {
 
-          $scope.player.load(pl.music_files[$scope.numberTrack].file_name);
-          $scope.player.audio.play();
+          // Загрузка музыкального файла из локального хранилища
+          readFile($scope.blobs[pl.music_files[$scope.numberTrack].file_name], function(event) {
+            $scope.player.load(event.target.result);
+
+            $scope.player.audio.play();
+          });
 
           $scope.player.on('canplay', function() {
             $scope.resetAnimation();
@@ -211,28 +261,31 @@ angular.module('muzloTemplateApp')
             $('.ad').show();
             $('.player-buttons').hide();
 
-            $scope.playerAd.load($scope.ad[$scope.numberTrackAd].file_name);
-            $scope.playerAd.audio.play();
+            readFile($scope.blobs[$scope.ad[$scope.numberTrackAd].file_name], function(event) {
+              $scope.playerAd.load(event.target.result);
 
-            // Окончание проигрывания рекламного трека
-            $scope.playerAd.on('ended', function () {
-              $scope.numberTrackAd++;
-
-              // Если треки в рекламном плейлисте закончились начинаем играть с первого
-              if ($scope.numberTrackAd >= $scope.ad.length) {
-                $scope.numberTrackAd = 0;
-              }
-
-              $scope.timeoutAd = $scope.adInterval;
-
-              setTimeout(function () {
-                $scope.play();
-
-                $('.ad').hide();
-                $('.player-buttons').show();
-              }, 1000);
+              $scope.playerAd.audio.play();
             });
           }
+        });
+
+        // Окончание проигрывания рекламного трека
+        $scope.playerAd.on('ended', function () {
+          $scope.numberTrackAd++;
+
+          // Если треки в рекламном плейлисте закончились начинаем играть с первого
+          if ($scope.numberTrackAd >= $scope.ad.length) {
+            $scope.numberTrackAd = 0;
+          }
+
+          $scope.timeoutAd = $scope.adInterval;
+
+          setTimeout(function () {
+            $scope.play();
+
+            $('.ad').hide();
+            $('.player-buttons').show();
+          }, 1000);
         });
 
         // Окончание проигрывания трека и переключение на следующий трек
@@ -325,15 +378,15 @@ angular.module('muzloTemplateApp')
           // Если плеер на паузе
           if($scope.player.position && !$scope.player.playing && $scope.isReady()) {
             $scope.player.audio.play();
-            setTimeout(function(){
-              $scope.resetAnimation();
-            }, 1000);
           }
           // Если включается первый раз
           else if(!$scope.player.position) {
             $scope.reset();
           }
 
+          setTimeout(function(){
+            $scope.resetAnimation();
+          }, 1000);
         };
 
         // Анимация
@@ -346,8 +399,5 @@ angular.module('muzloTemplateApp')
           $(this).find('span.bg').addClass('bounce animated forever');
         });
 
-        //if (!isMobile.iOS()) {
-        //  $scope.playMusic($scope.currentPlaylist);
-        //}
       });
   });
