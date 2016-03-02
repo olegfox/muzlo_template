@@ -41,7 +41,7 @@ angular.module('muzloTemplateApp')
       'Karma'
     ];
 
-    $http.get('/music/Шаблон 1/playlist.json')
+    $http.get(window.patternUrl)
       .then(function(response){
 
         // Массив Blob объектов
@@ -55,35 +55,6 @@ angular.module('muzloTemplateApp')
 
         $scope.timeoutAd = 0; // Счетчик рекламы
 
-        $http.get('/music/advert.json')
-          .then(function(response){
-
-             $scope.ad = response.data[0].files;
-
-             $scope.numberTrackAd = 0;
-             $scope.adInterval = response.data[0].rhythm * 15 * 1000;
-             $scope.timeoutAd = $scope.adInterval;
-
-            // Буферизация рекламных файлов
-            $.each($scope.ad, function(i, file){
-              var xhr = new XMLHttpRequest();
-
-              xhr.addEventListener('load', function(){
-                if (xhr.status == 200){
-
-                  $scope.blobs[file.file_name] = xhr.response;
-
-                }
-              });
-
-              xhr.open('GET', file.file_name);
-              xhr.responseType = 'blob';
-              xhr.send(null);
-
-            });
-          }
-        );
-
         // Шаблон
         $scope.pattern = response.data[0];
 
@@ -91,7 +62,39 @@ angular.module('muzloTemplateApp')
         $scope.patterns_dirs = $scope.pattern.patterns_dirs;
 
         // Текущий плейлист
-        $scope.patterns_dir = $scope.patterns_dirs[0];
+        $scope.patterns_dir = $scope.patterns_dirs[Object.keys($scope.patterns_dirs)[0]];
+console.log('url advert ' + window.advertUrl);
+console.log('length pattern dirs ' + Object.keys($scope.patterns_dirs).length);
+        if(Object.keys($scope.patterns_dirs).length > 0) {
+          $http.get(window.advertUrl)
+            .then(function(response){
+
+               $scope.ad = response.data[0].files;
+
+               $scope.numberTrackAd = 0;
+               $scope.adInterval = response.data[0].rhythm * 60 * 1000;
+               $scope.timeoutAd = $scope.adInterval;
+
+              // Буферизация рекламных файлов
+              $.each($scope.ad, function(i, file){
+                var xhr = new XMLHttpRequest();
+
+                xhr.addEventListener('load', function(){
+                  if (xhr.status == 200){
+
+                    $scope.blobs[file.file_name] = xhr.response;
+
+                  }
+                });
+
+                xhr.open('GET', file.file_name);
+                xhr.responseType = 'blob';
+                xhr.send(null);
+
+              });
+            }
+          );
+        }
 
         // Буферизация музыкальных файлов
         $.each($scope.patterns_dir.music_files, function(i, file){
@@ -121,28 +124,6 @@ angular.module('muzloTemplateApp')
         // Текущий трек
         $scope.numberTrack = 0;
 
-        // Определение мобильного устройства
-        var isMobile = {
-          Android: function () {
-            return navigator.userAgent.match(/Android/i);
-          },
-          BlackBerry: function () {
-            return navigator.userAgent.match(/BlackBerry/i);
-          },
-          iOS: function () {
-            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
-          },
-          Opera: function () {
-            return navigator.userAgent.match(/Opera Mini/i);
-          },
-          Windows: function () {
-            return navigator.userAgent.match(/IEMobile/i);
-          },
-          any: function () {
-            return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
-          }
-        };
-
         // Проверка вхождения плейлиста во временной диапазон
         $scope.checkPlaylistTime = function (playlist) {
 
@@ -164,14 +145,14 @@ angular.module('muzloTemplateApp')
           time_start = time_start.getHours() + ":" + time_start.getMinutes();
           time_end = time_end.getHours() + ":" + time_end.getMinutes();
 
-          $('.debug')
-            .empty()
-            .append("Debug: <br/><br/>" +
-            "Название шаблона: " + $scope.pattern.title + "<br/>" +
-            "Название плейлиста: " + $scope.patterns_dir.title + "<br/>" +
-            "Время начала: " + time_start + "<br/>" +
-            "Время окончания: " + time_end + "<br/>" +
-            "Текущее время: " + moment().format("HH:mm") + "<br/>");
+          // $('.debug')
+          //   .empty()
+          //   .append("Debug: <br/><br/>" +
+          //   "Название шаблона: " + $scope.pattern.title + "<br/>" +
+          //   "Название плейлиста: " + $scope.patterns_dir.title + "<br/>" +
+          //   "Время начала: " + time_start + "<br/>" +
+          //   "Время окончания: " + time_end + "<br/>" +
+          //   "Текущее время: " + moment().format("HH:mm") + "<br/>");
 
           // Сброс счетчика рекламы
           $scope.timeoutAd = $scope.adInterval;
@@ -191,10 +172,10 @@ angular.module('muzloTemplateApp')
             loadMusic($scope.patterns_dir);
           } else {
 
-            $('.debug')
-              .empty()
-              .append("Debug: <br/><br/>" +
-              "Под текущее время нет шаблона");
+            // $('.debug')
+            //   .empty()
+            //   .append("Debug: <br/><br/>" +
+            //   "Под текущее время нет шаблона");
 
             $scope.resetAnimation();
           }
@@ -208,12 +189,21 @@ angular.module('muzloTemplateApp')
         // Загрузка трека
         var loadMusic = function (pl) {
 
-          // Загрузка музыкального файла из локального хранилища
-          readFile($scope.blobs[pl.music_files[$scope.numberTrack].file_name], function(event) {
-            $scope.player.load(event.target.result);
+          // Если файл не загрузился, то выполняем задержку
+          if(!($scope.blobs[pl.music_files[$scope.numberTrack].file_name] instanceof Blob)) {
+            console.log('no blob');
+            $scope.player.load(pl.music_files[$scope.numberTrack].file_name);
 
             $scope.player.audio.play();
-          });
+          } else {
+            console.log('blob');
+            // Загрузка музыкального файла из локального хранилища
+            readFile($scope.blobs[pl.music_files[$scope.numberTrack].file_name], function(event) {
+              $scope.player.load(event.target.result);
+
+              $scope.player.audio.play();
+            });
+          }
 
           $scope.player.on('canplay', function() {
             $scope.resetAnimation();
@@ -227,19 +217,19 @@ angular.module('muzloTemplateApp')
             time_start = time_start.getHours() + ":" + time_start.getMinutes();
             time_end = time_end.getHours() + ":" + time_end.getMinutes();
 
-            $('.debug')
-              .empty()
-              .append("Debug: <br/><br/>" +
-                      "Название шаблона: " + $scope.pattern.title + "<br/>" +
-                      "Название плейлиста: " + $scope.patterns_dir.title + "<br/>" +
-                      "Время начала: " + time_start + "<br/>" +
-                      "Время окончания: " + time_end + "<br/>" +
-                      "Название трека: " + $scope.patterns_dir.music_files[$scope.numberTrack].title + "<br/>" +
-                      "Исполнитель: " + $scope.patterns_dir.music_files[$scope.numberTrack].owner + "<br/>" +
-                      "Жанр: " + $scope.patterns_dir.music_files[$scope.numberTrack].genre + "<br/>" +
-                      "Путь к файлу: " + $scope.patterns_dir.music_files[$scope.numberTrack].file_name + "<br/>" +
-                      "Продолжительность: " + moment.duration(duration, "seconds").format("mm:ss") + "<br/>" +
-                      "Время: " + position);
+            // $('.debug')
+            //   .empty()
+            //   .append("Debug: <br/><br/>" +
+            //           "Название шаблона: " + $scope.pattern.title + "<br/>" +
+            //           "Название плейлиста: " + $scope.patterns_dir.title + "<br/>" +
+            //           "Время начала: " + time_start + "<br/>" +
+            //           "Время окончания: " + time_end + "<br/>" +
+            //           "Название трека: " + $scope.patterns_dir.music_files[$scope.numberTrack].title + "<br/>" +
+            //           "Исполнитель: " + $scope.patterns_dir.music_files[$scope.numberTrack].owner + "<br/>" +
+            //           "Жанр: " + $scope.patterns_dir.music_files[$scope.numberTrack].genre + "<br/>" +
+            //           "Путь к файлу: " + $scope.patterns_dir.music_files[$scope.numberTrack].file_name + "<br/>" +
+            //           "Продолжительность: " + moment.duration(duration, "seconds").format("mm:ss") + "<br/>" +
+            //           "Время: " + position);
           };
         };
 
@@ -251,10 +241,8 @@ angular.module('muzloTemplateApp')
           }
           $scope.debug(position, duration);
 
-          console.log($scope.timeoutAd);
-
           $scope.timeoutAd -= 250;
-
+console.log($scope.timeoutAd);
           if($scope.timeoutAd <= 0) {
             $scope.stop();
 
