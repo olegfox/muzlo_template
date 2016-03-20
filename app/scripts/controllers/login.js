@@ -35,10 +35,23 @@ angular.module('muzloTemplateApp')
     });
 
     $(".arrow").each(function(i, el) {
-      $(el).click(function(e){
-        e.preventDefault();
-        $("html, body").animate({scrollTop: $("." + $(el).data('current-level')).nextAll('.level-block').first().offset().top}, 1000);
-      });
+      if($(el).data('current-level')) {
+        $(el).click(function(e){
+          console.log($(el).data('current-level'));
+          e.preventDefault();
+          $("html, body").animate({scrollTop: $("." + $(el).data('current-level')).nextAll('.level-block').first().offset().top}, 1000);
+        });
+      }
+    });
+
+    $(".hint-right").each(function(i, el) {
+      if($(el).data('current-level')) {
+        $(el).click(function(e){
+          console.log($(el).data('current-level'));
+          e.preventDefault();
+          $("html, body").animate({scrollTop: $("." + $(el).data('current-level')).offset().top}, 1000);
+        });
+      }
     });
 
   });

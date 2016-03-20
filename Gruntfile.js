@@ -414,7 +414,8 @@ module.exports = function (grunt) {
             '*.html',
             'images/{,*/}*.{webp}',
             'styles/fonts/{,*/}*.*',
-            'music/**/*'
+            'music/**/*',
+            'video/**/*'
           ]
         }, {
           expand: true,
