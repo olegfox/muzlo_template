@@ -15,5 +15,30 @@ angular.module('muzloTemplateApp')
       'Karma'
     ];
 
+    jQuery('.wrap-header').each(function(i, e) {
+      if(jQuery(e).attr('data-video') != undefined) {
+        if(jQuery(e).data('video').length > 0) {
+          jQuery(e).vide({
+            mp4: jQuery(e).data('video')
+          }, {
+            volume: 1,
+            playbackRate: 1,
+            muted: true,
+            autoplay: true,
+            loop: true,
+            position: '50% 50%', // Similar to the CSS `background-position` property.
+            posterType: 'detect', // Poster image type. "detect" — auto-detection; "none" — no poster; "jpg", "png", "gif",... - extensions.
+            resizing: true // Auto-resizing, read: https://github.com/VodkaBears/Vide#resizing...
+          });
+        }
+      }
+    });
+
+    $(".arrow").each(function(i, el) {
+      $(el).click(function(e){
+        e.preventDefault();
+        $("html, body").animate({scrollTop: $("." + $(el).data('current-level')).nextAll('.level-block').first().offset().top}, 1000);
+      });
+    });
 
   });
