@@ -1,0 +1,39 @@
+.wrap-form {
+  position: relative;
+  height: 35px;
+  top: 50%;
+  margin-top: -17px;
+  text-align: center;
+  .form{
+    .for-input{
+      display: inline-block;
+      input{
+        border: #979797 solid 4px;
+        height: 35px;
+        width: 500px;
+        line-height: 35px;
+        background: #000;
+        padding: 0 10px;
+        color: #979797;
+        &:focus{
+          outline: 0;
+        }
+      }
+    }
+    .btn{
+      display: inline-block;
+      border: #979797 solid 4px;
+      height: 43px;
+      line-height: 27px;
+      background: #000;
+      padding: 0 10px;
+      text-align: center;
+      color: #979797;
+      margin-left: 15px;
+      cursor: pointer;
+      &:focus{
+        outline: 0;
+      }
+    }
+  }
+}
