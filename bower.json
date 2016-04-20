@@ -16,7 +16,9 @@
     "moment": "2.11.1",
     "moment-duration-format": "1.3.0",
     "animate-css": "3.5.1",
-    "vide": "git://github.com/VodkaBears/Vide.git"
+    "vide": "git://github.com/VodkaBears/Vide.git",
+    "wow": "git://github.com/matthieua/WOW.git",
+    "isInViewport": "https://github.com/zeusdeux/isInViewport.git"	
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"

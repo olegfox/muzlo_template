@@ -66,20 +66,17 @@
           }
           &.btn-play{
             .bg{
-              background: url("../images/play.png") 0 0 no-repeat;
-              background-size: contain;
+              background: url("../images/play.png") center center no-repeat; 
             }
           }
           &.btn-stop{
             .bg{
-              background: url("../images/stop.png") 0 0 no-repeat;
-              background-size: contain;
+              background: url("../images/stop.png") center center no-repeat;
             }
-          }
+          } 
           &.btn-reset{
             .bg{
-              background: url("../images/reset.png") 0 0 no-repeat;
-              background-size: contain;
+              background: url("../images/reset.png") center center no-repeat;
             }
           }
         }
