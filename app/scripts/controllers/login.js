@@ -15,7 +15,7 @@ angular.module('muzloTemplateApp')
       'Karma'
     ];
 
-    jQuery('.wrap-header').each(function(i, e) {
+    jQuery('.slider3d__item').each(function(i, e) {
       if(jQuery(e).attr('data-video') != undefined) {
         if(jQuery(e).data('video').length > 0) {
           jQuery(e).vide({
@@ -39,7 +39,7 @@ angular.module('muzloTemplateApp')
         $(el).click(function(e){
           console.log($(el).data('current-level'));
           e.preventDefault();
-          $("html, body").animate({scrollTop: $("." + $(el).data('current-level')).nextAll('.level-block').first().offset().top}, 1000);
+          $("html, body").scrollTop(100);
         });
       }
     });
@@ -54,38 +54,38 @@ angular.module('muzloTemplateApp')
       }
     });
 
-    var wow = new WOW(
-      {
-        boxClass: 'wow',      // animated element css class (default is wow)
-        animateClass: 'animated', // animation css class (default is animated)
-        offset: 0,          // distance to the element when triggering the animation (default is 0)
-        mobile: true,       // trigger animations on mobile devices (default is true)
-        live: true        // act on asynchronously loaded content (default is true),
-      }
-    );
-    wow.init();
-
-    $(window).scroll(function() {
-      console.log('window scrollTop = ' + $(this).scrollTop());
-      if($(this).scrollTop() > $('.level74').offset().top + $('html').height() || $(this).scrollTop() < $('.level74').offset().top - $('html').height() / 2) {
-          console.log('hide wow');
-          $('.cloud_women').css({
-              'visibility' : 'hidden',
-              'animation-name' : 'none'
-          }).removeClass('animated');   
-          $('.women').css({
-              'visibility' : 'hidden',
-              'animation-name' : 'none'
-          }).removeClass('animated');   
-      } else {
-          console.log('show wow'); 
-          $('.cloud_women').removeAttr('style').addClass('animated'); 
-
-          setTimeout(function() {
-              $('.women').removeAttr('style').addClass('animated'); 
-          }, 1000);  
-      } 
-
-    });
+    //var wow = new WOW(
+    //  {
+    //    boxClass: 'wow',      // animated element css class (default is wow)
+    //    animateClass: 'animated', // animation css class (default is animated)
+    //    offset: 0,          // distance to the element when triggering the animation (default is 0)
+    //    mobile: true,       // trigger animations on mobile devices (default is true)
+    //    live: true        // act on asynchronously loaded content (default is true),
+    //  }
+    //);
+    //wow.init();
+    //
+    //$(window).scroll(function() {
+    //  console.log('window scrollTop = ' + $(this).scrollTop());
+    //  if($(this).scrollTop() > $('.level74').offset().top + $('html').height() || $(this).scrollTop() < $('.level74').offset().top - $('html').height() / 2) {
+    //      console.log('hide wow');
+    //      $('.cloud_women').css({
+    //          'visibility' : 'hidden',
+    //          'animation-name' : 'none'
+    //      }).removeClass('animated');
+    //      $('.women').css({
+    //          'visibility' : 'hidden',
+    //          'animation-name' : 'none'
+    //      }).removeClass('animated');
+    //  } else {
+    //      console.log('show wow');
+    //      $('.cloud_women').removeAttr('style').addClass('animated');
+    //
+    //      setTimeout(function() {
+    //          $('.women').removeAttr('style').addClass('animated');
+    //      }, 1000);
+    //  }
+    //
+    //});
 
   });

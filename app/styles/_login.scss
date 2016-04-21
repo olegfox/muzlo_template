@@ -2,6 +2,135 @@ video {
   opacity: 0.8!important;
 }
 
+.slider3d {
+
+  .slider3d__wrapper {
+
+    .slider3d__inner {
+
+      .slider3d__rotater {
+
+        .slider3d__item {
+
+          .content-wrapp {
+
+            //bottom: 0;
+            //margin: auto 0;
+
+            .rot {
+
+              //position: absolute;
+              //bottom: 0;
+              //left: 0;
+              //right: 0;
+              //margin: auto 0;
+
+              &.r1 {
+
+
+
+              }
+
+              .slider3d__heading {
+
+
+
+              }
+
+              h2 {
+
+                font-family: Baibakov-Bold;
+                font-size: 82px;
+                padding: 20px 0px;
+
+              }
+
+              .wrap-center-block {
+
+                display: table;
+                height: 100%;
+                width: 100%;
+
+                .center-block {
+
+                  display: table-cell;
+                  vertical-align: middle;
+                  text-align: center;
+
+                  h1 {
+
+                    font-family: Baibakov-Bold;
+                    padding: 20px 0px;
+
+                  }
+                  h2 {
+
+                  }
+                }
+                .cloud_women {
+                  position: absolute;
+                  height: 100%;
+                  left: 0;
+                  right: 0;
+                  background: url('../images/cloud_women.png') bottom no-repeat;
+                  background-size: contain;
+                }
+                .women {
+                  position: absolute;
+                  height: 100%;
+                  left: 0;
+                  right: 0;
+                  background: url('../images/women.png') bottom no-repeat;
+                  background-size: contain;
+                }
+              }
+
+            }
+
+          }
+
+          .arrow {
+            position: absolute;
+            display: block;
+            left: 0px;
+            right: 0px;
+            margin: 0 auto;
+            bottom: 25px;
+            height: 28px;
+            width: 43px;
+            background: url("../images/icon-arrow.png") 0 0 no-repeat;
+            cursor: pointer !important;
+            &.arrow-blink {
+              animation: blinker 1s linear infinite;
+            }
+          }
+
+          .hint-right {
+
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #fff;
+            text-shadow: 2px 2px 2px grey,0 0 1em grey;
+
+            &.hint-right-none {
+              display: none;
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
 .wrap-header {
 
   position: relative;
@@ -27,7 +156,7 @@ video {
 
   &.level74 {
     height: 90%;
-    background: url('../images/bg_women.png') 0 0 no-repeat; 
+    background: url('../images/bg_women.png') 0 0 no-repeat;
     background-size: cover;
     overflow: hidden;
   }
@@ -73,7 +202,7 @@ video {
         right: 50px;
         font-size: 24px;
         cursor: pointer;
-        color: #fff; 
+        color: #fff;
 
         &.hint-right-none {
           display: none;
@@ -105,15 +234,15 @@ video {
       .cloud_women {
       	position: absolute;
       	height: 100%;
-      	left: 0;  
+      	left: 0;
       	right: 0;
       	background: url('../images/cloud_women.png') bottom no-repeat;
       	background-size: contain;
       }
       .women {
       	position: absolute;
-      	height: 100%;  
-      	left: 0;   
+      	height: 100%;
+      	left: 0;
       	right: 0;
       	background: url('../images/women.png') bottom no-repeat;
       	background-size: contain;
@@ -122,7 +251,7 @@ video {
     .arrow {
       position: absolute;
       display: block;
-      left: 0px;  
+      left: 0px;
       right: 0px;
       margin: 0 auto;
       bottom: 25px;
@@ -177,7 +306,7 @@ video {
 
 .wrap-form {
   position: relative;
-  text-align: center; 
+  text-align: center;
   height: 45%;
   background: #666666;
   overflow: hidden;
@@ -205,7 +334,7 @@ video {
       font-size: 24px;
       display: inline-block;
       border: #fff solid 4px;
-      height: 43px; 
+      height: 43px;
       background: #000;
       padding: 0 10px;
       text-align: center;
@@ -231,7 +360,7 @@ video {
 
       h1 {
         font-family: Baibakov-Bold;
-        padding: 20px 0px; 
+        padding: 20px 0px;
 
       }
       h2 {
