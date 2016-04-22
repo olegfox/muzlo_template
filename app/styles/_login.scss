@@ -2,10 +2,12 @@ video {
   opacity: 0.8!important;
 }
 
-.level79 {
+.level74 {
 
-  background-color: #6e6e6e;
-  
+  background: url('../images/bg_women.png') 0 0 no-repeat;
+  background-size: cover;
+  overflow: hidden;
+
 }
 
 .wrap-center-block {
@@ -30,7 +32,7 @@ video {
 
     }
   }
-  .cloud_women { 
+  .cloud_women {
     position: absolute;
     height: 100%;
     top: 0;
@@ -48,7 +50,7 @@ video {
     background: url('../images/women.png') bottom no-repeat;
     background-size: contain;
   }
-}  
+}
 
 .slider3d {
 
@@ -93,6 +95,10 @@ video {
 
               }
 
+            }
+
+            p {
+              font-family: Baibakov-Bold;
             }
 
           }
