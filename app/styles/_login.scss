@@ -52,6 +52,72 @@ video {
   }
 }
 
+.wrap-form {
+  position: relative;
+  text-align: center;
+  height: 50%;
+  background: #666666;
+  overflow: hidden;
+  .form{
+    .for-input{
+      display: inline-block;
+      input{
+        font-family: Baibakov-Regular,sans-serif;
+        font-weight: normal;
+        font-size: 24px;
+        border: #fff solid 4px;
+        height: 43px;
+        width: 500px;
+        background: #000;
+        padding: 0 10px;
+        color: #979797;
+        &:focus{
+          outline: 0;
+        }
+      }
+    }
+    .btn{
+      font-family: Baibakov-Regular,sans-serif;
+      font-weight: normal;
+      font-size: 24px;
+      display: inline-block;
+      border: #fff solid 4px;
+      height: 43px;
+      background: #000;
+      padding: 0 10px;
+      text-align: center;
+      color: #979797;
+      margin-left: 15px;
+      cursor: pointer;
+      &:focus{
+        outline: 0;
+      }
+    }
+  }
+  .wrap-center-block {
+
+    display: table;
+    height: 100%;
+    width: 100%;
+
+    .center-block {
+
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+
+      h1 {
+        font-family: Baibakov-Bold;
+        padding: 20px 0px;
+
+      }
+      h2 {
+
+      }
+    }
+  }
+}
+
 .slider3d {
 
   .slider3d__wrapper {
@@ -284,7 +350,8 @@ video {
 
 .wrap-line {
   position: relative;
-  height: 45%;
+  height: 50%;
+  font-family: Baibakov-Regular;
   .line {
     position: relative;
     height: 100%;
@@ -307,72 +374,6 @@ video {
 
       h1 {
 
-        font-family: Baibakov-Bold;
-        padding: 20px 0px;
-
-      }
-      h2 {
-
-      }
-    }
-  }
-}
-
-.wrap-form {
-  position: relative;
-  text-align: center;
-  height: 45%;
-  background: #666666;
-  overflow: hidden;
-  .form{
-    .for-input{
-      display: inline-block;
-      input{
-        font-family: Baibakov-Regular,sans-serif;
-        font-weight: normal;
-        font-size: 24px;
-        border: #fff solid 4px;
-        height: 35px;
-        width: 500px;
-        background: #000;
-        padding: 0 10px;
-        color: #979797;
-        &:focus{
-          outline: 0;
-        }
-      }
-    }
-    .btn{
-      font-family: Baibakov-Regular,sans-serif;
-      font-weight: normal;
-      font-size: 24px;
-      display: inline-block;
-      border: #fff solid 4px;
-      height: 43px;
-      background: #000;
-      padding: 0 10px;
-      text-align: center;
-      color: #979797;
-      margin-left: 15px;
-      cursor: pointer;
-      &:focus{
-        outline: 0;
-      }
-    }
-  }
-  .wrap-center-block {
-
-    display: table;
-    height: 100%;
-    width: 100%;
-
-    .center-block {
-
-      display: table-cell;
-      vertical-align: middle;
-      text-align: center;
-
-      h1 {
         font-family: Baibakov-Bold;
         padding: 20px 0px;
 

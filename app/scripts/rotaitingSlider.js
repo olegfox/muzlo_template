@@ -68,16 +68,16 @@
         $(".up").css( "transform", "translateY(0%)");
         k--;
         if(k==0){
-            k=4;
+            k=6;
         }
           rotsl();
       };
 
-      function navigateDown() {
+      rotatingSlider.navigateDown = function () {
         rotateSlider(1);
         $(".down").css( "transform", "translateY(0%)");
         k++;
-        if(k==5){
+        if(k==7){
             k=1;
         }
           rotsl();
@@ -90,12 +90,12 @@
         if (delta > 0) {
           navigateUp();
         } else if (delta < 0) {
-          navigateDown();
+          rotatingSlider.navigateDown();
         }
       };
 
         function rotsl(){
-           // alert(k);
+            //alert(k);
         switch (k) {
           case 1:
             $(".r4").addClass("up");
@@ -128,7 +128,7 @@
             $(".r3").removeClass("up");
             $(".r1").removeClass("down");
             break;
-          case 4:
+          case 5:
             $(".r3").addClass("up");
             $(".r1").addClass("down");
 
@@ -175,7 +175,7 @@
           if ($(this).hasClass("m--up")) {
             navigateUp();
           } else {
-            navigateDown();
+            rotatingSlider.navigateDown();
           }
         });
       };
