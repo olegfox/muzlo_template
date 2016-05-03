@@ -1,15 +1,15 @@
-(function() {
-  var rotatingSlider = function(selector, options) {
+(function () {
+  var rotatingSlider = function (selector, options) {
 
     function initSingleSlider($el, options) {
       var $slider, $rotaters,
-          $handle, $handleItems,
-          numOfItems,
-          angle, currentAngle = 0,
-          prefix = ".slider3d__",
-          handlePrefix = prefix + "handle__",
-          rotating = false,
-          k=1;
+        $handle, $handleItems,
+        numOfItems,
+        angle, currentAngle = 0,
+        prefix = ".slider3d__",
+        handlePrefix = prefix + "handle__",
+        rotating = false,
+        k = 1;
 
       var defaultOptions = {
         xRotation: false,
@@ -48,13 +48,14 @@
       function rotateSlider(delta) {
         var newAngle = currentAngle + delta * angle;
 
-        $rotaters.css({"transform": "rotate"+axis+"("+ (newAngle * angleMult * -1) +"deg)",
-                       "transition": "transform " + __opts.speed / 1000 + "s " + __opts.easing});
+        $rotaters.css({
+          "transform": "rotate" + axis + "(" + (newAngle * angleMult * -1) + "deg)",
+          "transition": "transform " + __opts.speed / 1000 + "s " + __opts.easing
+        });
         currentAngle = newAngle;
 
 
-
-        setTimeout(function() {
+        setTimeout(function () {
           $rotaters.css("transition", "transform 0s");
           handleActiveItem();
           rotating = false;
@@ -64,27 +65,44 @@
       };
 
       function navigateUp() {
-        rotateSlider(-1);
-        $(".up").css( "transform", "translateY(0%)");
-        k--;
-        if(k==0){
-            k=6;
-        }
+
+        if (k > 1) {
+          rotateSlider(-1);
+
+          $(".up").css("transform", "translateY(0%)");
+          k--;
+
           rotsl();
+        } else {
+
+          rotating = false;
+
+        }
+
       };
 
       rotatingSlider.navigateDown = function () {
-        rotateSlider(1);
-        $(".down").css( "transform", "translateY(0%)");
-        k++;
-        if(k==7){
-            k=1;
-        }
+
+        if (k != 6) {
+          rotateSlider(1);
+          $(".down").css("transform", "translateY(0%)");
+
+          k++;
+
           rotsl();
+
+        } else {
+
+          rotating = false;
+
+        }
+
       };
 
       function scrollHandler(e) {
+        //console.log(rotating);
         if (rotating && !__opts.allowScrolluringAnim) return;
+        //console.log(__opts.allowScrolluringAnim);
         rotating = true;
         var delta = e.originalEvent.wheelDelta || -e.originalEvent.detail;
         if (delta > 0) {
@@ -92,10 +110,36 @@
         } else if (delta < 0) {
           rotatingSlider.navigateDown();
         }
+
+        if (k == 4) {
+
+          $('.cloud_women').removeAttr('style').addClass('animated');
+
+          setTimeout(function() {
+            $('.women').removeAttr('style').addClass('animated');
+          }, 1000);
+
+        } else {
+
+          setTimeout(function() {
+
+            $('.cloud_women').css({
+              'visibility' : 'hidden',
+              'animation-name' : 'none'
+            }).removeClass('animated');
+            $('.women').css({
+              'visibility' : 'hidden',
+              'animation-name' : 'none'
+            }).removeClass('animated');
+
+          }, 1000);
+
+        }
+
       };
 
-        function rotsl(){
-            //alert(k);
+      function rotsl() {
+        //alert(k);
         switch (k) {
           case 1:
             $(".r4").addClass("up");
@@ -139,10 +183,10 @@
             $(".r2").removeClass("down");
             break;
         }
-            $(".up").css( "transform", "translateY(-60%)");
-            $(".down").css( "transform", "translateY(60%)");
+        $(".up").css("transform", "translateY(-60%)");
+        $(".down").css("transform", "translateY(60%)");
 
-        }
+      }
 
       function initControls() {
         var $controls = $(prefix + "controls");
@@ -151,25 +195,27 @@
         $handleItems = $(handlePrefix + "item", $handle);
         var s = (__opts.xRotation) ? $handle.width() : $handle.height();
         var pers = s * __opts.handlePersMult;
-        var depth = s / 2 / Math.tan(angle / 2 * Math.PI/180);
+        var depth = s / 2 / Math.tan(angle / 2 * Math.PI / 180);
 
         $slider.addClass("with-controls");
-        $handle.css({"-webkit-perspective": pers + "px",
-                     "perspective": pers + "px"})
+        $handle.css({
+          "-webkit-perspective": pers + "px",
+          "perspective": pers + "px"
+        })
           .addClass("js-handle");
-        $handleInner.css("transform", "translateZ(-"+ depth +"px)");
+        $handleInner.css("transform", "translateZ(-" + depth + "px)");
 
         if (__opts.xRotation) $controls.addClass("m--xAxis");
 
-        $handleItems.each(function(index) {
-          $(this).css("transform", "rotate"+axis+"("+ (index * angle * angleMult) +"deg) translateZ("+ depth +"px)");
+        $handleItems.each(function (index) {
+          $(this).css("transform", "rotate" + axis + "(" + (index * angle * angleMult) + "deg) translateZ(" + depth + "px)");
         });
 
-        $rotaters = $(prefix + "rotater, "+ handlePrefix + "rotater", $slider);
+        $rotaters = $(prefix + "rotater, " + handlePrefix + "rotater", $slider);
 
         $handle.on("mousedown touchstart", dragRotationHandler);
 
-        $(document).on("click", ".slider3d__control", function() {
+        $(document).on("click", ".slider3d__control", function () {
           if (rotating && !__opts.allowControlsDuringAnim) return;
           rotating = true;
           if ($(this).hasClass("m--up")) {
@@ -189,14 +235,16 @@
         angle = 360 / numOfItems;
         var s = (__opts.xRotation) ? $slider.width() : $slider.height();
         var pers = s * __opts.persMult;
-        var depth = s / 2 / Math.tan(angle / 2 * Math.PI/180);
+        var depth = s / 2 / Math.tan(angle / 2 * Math.PI / 180);
 
-        $wrapper.css({"-webkit-perspective": pers + "px",
-                      "perspective": pers + "px"});
-        $inner.css("transform", "translateZ(-"+ depth +"px)");
+        $wrapper.css({
+          "-webkit-perspective": pers + "px",
+          "perspective": pers + "px"
+        });
+        $inner.css("transform", "translateZ(-" + depth + "px)");
 
-        $items.each(function(index) {
-          $(this).css("transform", "rotate"+axis+"("+ (index * angle * angleMult) +"deg) translateZ("+ depth +"px)");
+        $items.each(function (index) {
+          $(this).css("transform", "rotate" + axis + "(" + (index * angle * angleMult) + "deg) translateZ(" + depth + "px)");
         });
 
         $slider.addClass("slider-ready");
@@ -213,16 +261,16 @@
     }
 
     function globalInit() {
-      $(selector).each(function() {
+      $(selector).each(function () {
         initSingleSlider($(this), options);
       });
     };
 
     function debounce(func, wait, immediate) {
       var timeout;
-      return function() {
+      return function () {
         var context = this, args = arguments;
-        var later = function() {
+        var later = function () {
           timeout = null;
           if (!immediate) func.apply(context, args);
         };
@@ -233,7 +281,7 @@
       };
     };
 
-    var resizeFn = debounce(function() {
+    var resizeFn = debounce(function () {
       globalInit();
     }, 100);
 
@@ -246,7 +294,7 @@
   window.rotatingSlider = rotatingSlider;
 }());
 
-$(document).ready(function() {
+$(document).ready(function () {
 
   rotatingSlider(".slider3d", {xRotation: false, globalDragRotation: false});
 

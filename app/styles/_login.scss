@@ -74,6 +74,19 @@ video {
         &:focus{
           outline: 0;
         }
+
+        @media screen and (max-width: 480px) {
+
+          width: 250px;
+
+        }
+
+        @media screen and (max-width: 320px) {
+
+          width: 200px;
+
+        }
+
       }
     }
     .btn{
@@ -158,6 +171,12 @@ video {
                 font-family: Baibakov-Bold;
                 font-size: 82px;
                 padding: 20px 0px;
+
+                @media screen and (max-width: 480px) {
+
+                  font-size: 52px;
+
+                }
 
               }
 
@@ -371,6 +390,7 @@ video {
       display: table-cell;
       vertical-align: middle;
       text-align: center;
+      padding: 0 20px;
 
       h1 {
 
