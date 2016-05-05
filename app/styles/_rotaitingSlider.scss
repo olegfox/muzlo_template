@@ -55,7 +55,7 @@ body {
   background-size: cover;
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
-  background-color: #000;
+  background-color: #fff;
   //-webkit-transform-style: preserve-3d;
   //        transform-style: preserve-3d;
 }
@@ -70,18 +70,21 @@ body {
   text-align: center;
   font-size: 12rem;
   line-height: 1;
-  color: #ffffff;
+  color: #000000;
 }
 
 .rot{
-    transition: all 2.25s;
+    opacity: 1;
+    transition: all 4.25s;
 }
 
 .down{
+    opacity: 0;
     transform: translateY(60%);
 }
 
 .up{
+    opacity: 0;
     transform: translateY(-60%);
 }
 

@@ -75,7 +75,7 @@ video {
           outline: 0;
         }
 
-        @media screen and (max-width: 480px) {
+        @media screen and (max-width: 640px) {
 
           width: 250px;
 
@@ -172,7 +172,13 @@ video {
                 font-size: 82px;
                 padding: 20px 0px;
 
-                @media screen and (max-width: 480px) {
+                &.dark {
+
+                  color: #000000;
+
+                }
+
+                @media screen and (max-width: 640px) {
 
                   font-size: 52px;
 
@@ -199,6 +205,11 @@ video {
             width: 43px;
             background: url("../images/icon-arrow.png") 0 0 no-repeat;
             cursor: pointer !important;
+            &--dark {
+
+              background: url("../images/icon-arrow-dark.png") 0 0 no-repeat;
+
+            }
             &.arrow-blink {
               animation: blinker 1s linear infinite;
             }
