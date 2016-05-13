@@ -56,7 +56,7 @@ video {
   position: relative;
   text-align: center;
   height: 50%;
-  background: #666666;
+  background: #ffffff;
   overflow: hidden;
   .form{
     .for-input{
@@ -65,12 +65,12 @@ video {
         font-family: Baibakov-Regular,sans-serif;
         font-weight: normal;
         font-size: 24px;
-        border: #fff solid 4px;
+        border: #000000 solid 4px;
         height: 43px;
         width: 500px;
-        background: #000;
+        background: #ffffff;
         padding: 0 10px;
-        color: #979797;
+        color: #000000;
         &:focus{
           outline: 0;
         }
@@ -94,12 +94,12 @@ video {
       font-weight: normal;
       font-size: 24px;
       display: inline-block;
-      border: #fff solid 4px;
+      border: #000 solid 4px;
       height: 43px;
-      background: #000;
+      background: #fff;
       padding: 0 10px;
       text-align: center;
-      color: #979797;
+      color: #000000;
       margin-left: 15px;
       cursor: pointer;
       &:focus{
@@ -171,6 +171,7 @@ video {
                 font-family: Baibakov-Bold;
                 font-size: 82px;
                 padding: 20px 0px;
+                text-shadow: 2px 2px 2px grey,0 0 1em grey;
 
                 &.dark {
 
@@ -224,6 +225,19 @@ video {
             cursor: pointer;
             color: #fff;
             text-shadow: 2px 2px 2px grey,0 0 1em grey;
+            border: #fff solid 4px;
+            border-radius: 25px;
+            padding: 10px 35px;
+            box-shadow: 2px 2px 2px grey,0 0 1em grey;
+
+            @media screen and (max-width: 640px) {
+
+              left: 50px;
+              max-width: 144px;
+              box-sizing: content-box;
+              margin: 0 auto;
+
+            }
 
             &.hint-right-none {
               display: none;
@@ -388,7 +402,7 @@ video {
     z-index: 2;
   }
   &.level79 {
-    background-color: #6e6e6e;
+    background-color: #fff;
   }
   .wrap-center-block {
 
