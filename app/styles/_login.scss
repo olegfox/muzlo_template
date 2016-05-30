@@ -40,6 +40,22 @@ video {
     right: 0;
     background: url('../images/cloud_women.png') bottom no-repeat;
     background-size: contain;
+
+    @media screen and (max-width: 768px) {
+
+      background: url(../images/cloud_women.png) -201px 193px no-repeat;
+      background-size: 130%;
+      z-index: 1;
+
+    }
+
+    @media screen and (max-width: 375px) {
+
+      background: url(../images/cloud_women.png) -75px 214px no-repeat;
+      background-size: 130%;
+      z-index: 1;
+
+    }
   }
   .women {
     position: absolute;
@@ -49,6 +65,21 @@ video {
     right: 0;
     background: url('../images/women.png') bottom no-repeat;
     background-size: contain;
+
+    @media screen and (max-width: 768px) {
+
+      background: url(../images/women.png) -1111px bottom no-repeat;
+      background-size: 300%;
+
+    }
+
+    @media screen and (max-width: 375px) {
+
+      background: url(../images/women.png) -466px bottom no-repeat;
+      background-size: 300%;
+
+    }
+
   }
 }
 
@@ -102,6 +133,7 @@ video {
       color: #000000;
       margin-left: 15px;
       cursor: pointer;
+      vertical-align: top;
       &:focus{
         outline: 0;
       }
@@ -116,8 +148,9 @@ video {
     .center-block {
 
       display: table-cell;
-      vertical-align: middle;
+      vertical-align: top;
       text-align: center;
+      padding-top: 20px;
 
       h1 {
         font-family: Baibakov-Bold;
@@ -362,6 +395,7 @@ video {
       	right: 0;
       	background: url('../images/cloud_women.png') bottom no-repeat;
       	background-size: contain;
+
       }
       .women {
       	position: absolute;
@@ -370,6 +404,7 @@ video {
       	right: 0;
       	background: url('../images/women.png') bottom no-repeat;
       	background-size: contain;
+
       }
     }
     .arrow {
@@ -416,6 +451,13 @@ video {
       vertical-align: middle;
       text-align: center;
       padding: 0 20px;
+
+      @media screen and (max-width: 768px) {
+
+        vertical-align: bottom;
+        padding: 0 20px 20px 20px;
+
+      }
 
       h1 {
 
